@@ -27,8 +27,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#include "../flanterm.h"
-#include "fb.h"
+#include <flanterm/flanterm.h>
+#include <flanterm/backends/fb.h>
 
 void *memset(void *, int, size_t);
 void *memcpy(void *, const void *, size_t);

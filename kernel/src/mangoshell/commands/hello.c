@@ -1,6 +1,6 @@
-#include "commands.h"
+#include <mangoshell/commands/commands.h>
 
 void hello(struct flanterm_context *ftctx/*int argc, char** argv*/)
 {
-    printf(ftctx, "Hello!");
+    // NO printf(ftctx, "Hello!");
 }

@@ -1,7 +1,7 @@
 # Nuke built-in rules and variables.
 override MAKEFLAGS += -rR
 
-override IMAGE_NAME := mangoOS
+override IMAGE_NAME := MangoOS
 
 .PHONY: all
 all: $(IMAGE_NAME).iso
@@ -11,7 +11,7 @@ all-hdd: $(IMAGE_NAME).hdd
 
 .PHONY: run
 run: $(IMAGE_NAME).iso
-	qemu-system-x86_64 -M q35 -m 2G -cdrom $(IMAGE_NAME).iso -boot d
+	qemu-system-x86_64 -M q35 -m 2G -d int -cdrom $(IMAGE_NAME).iso -boot d
 
 .PHONY: run-uefi
 run-uefi: ovmf $(IMAGE_NAME).iso
@@ -43,20 +43,10 @@ $(IMAGE_NAME).iso: limine/limine kernel
 	mkdir -p iso_root/boot
 	cp -v kernel/bin/kernel iso_root/boot/
 	mkdir -p iso_root/boot/limine
-	cp -v limine/limine-bios.sys limine/limine-bios-cd.bin limine/limine-uefi-cd.bin iso_root/boot/limine/
+	cp -v limine.cfg limine/limine-bios.sys limine/limine-bios-cd.bin limine/limine-uefi-cd.bin iso_root/boot/limine/
 	mkdir -p iso_root/EFI/BOOT
 	cp -v limine/BOOTX64.EFI iso_root/EFI/BOOT/
 	cp -v limine/BOOTIA32.EFI iso_root/EFI/BOOT/
-	echo "TIMEOUT=5" >> iso_root/boot/limine/limine.cfg
-	echo ":Mango" >> iso_root/boot/limine/limine.cfg
-	echo "	PROTOCOL=limine" >> iso_root/boot/limine/limine.cfg
-	echo "	KASLR=no" >> iso_root/boot/limine/limine.cfg
-	echo "	KERNEL_PATH=boot:///boot/kernel" >> iso_root/boot/limine/limine.cfg
-	echo "	RESOLUTION=1920x1080" >> iso_root/boot/limine/limine.cfg
-	echo ":Mango (KASLR)" >> iso_root/boot/limine/limine.cfg
-	echo "	PROTOCOL=limine" >> iso_root/boot/limine/limine.cfg
-	echo "	KERNEL_PATH=boot:///boot/kernel" >> iso_root/boot/limine/limine.cfg
-	echo "	RESOLUTION=1920x1080" >> iso_root/boot/limine/limine.cfg
 	xorriso -as mkisofs -b boot/limine/limine-bios-cd.bin \
 		-no-emul-boot -boot-load-size 4 -boot-info-table \
 		--efi-boot boot/limine/limine-uefi-cd.bin \

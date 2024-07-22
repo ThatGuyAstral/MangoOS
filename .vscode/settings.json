@@ -6,6 +6,7 @@
         "flanterm.h": "c",
         "mangoshell.h": "c",
         "main.h": "c",
-        "commands.h": "c"
+        "commands.h": "c",
+        "fb.h": "c"
     }
 }

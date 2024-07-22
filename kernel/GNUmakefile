@@ -18,7 +18,7 @@ endef
 # It is suggested to use a custom built cross toolchain to build a kernel.
 # We are using the standard "cc" here, it may work by using
 # the host system's toolchain, but this is not guaranteed.
-override DEFAULT_KCC := cc
+override DEFAULT_KCC := gcc
 $(eval $(call DEFAULT_VAR,KCC,$(DEFAULT_KCC)))
 
 # Same thing for "ld" (the linker).
@@ -57,11 +57,12 @@ override KCFLAGS += \
     -mno-mmx \
     -mno-sse \
     -mno-sse2 \
-    -mno-red-zone
+    -mno-red-zone \
+    -g \
 
 # Internal C preprocessor flags that should not be changed by the user.
 override KCPPFLAGS := \
-    -I src \
+    -I include \
     $(KCPPFLAGS) \
     -MMD \
     -MP
@@ -73,21 +74,19 @@ override KLDFLAGS += \
     -pie \
     -z text \
     -z max-page-size=0x1000 \
-    -share \
-    -pic \
     -T linker.ld
 
 # Internal nasm flags that should not be changed by the user.
 override KNASMFLAGS += \
     -Wall \
-    -f elf64 \
+    -f elf64
 
 # Use "find" to glob all *.c, *.S, and *.asm files in the tree and obtain the
 # object and header dependency file names.
 override CFILES := $(shell cd src && find -L * -type f -name '*.c')
-override ASFILES := $(shell cd src && find -L * -type f -name '*.s')
+override ASFILES := $(shell cd src && find -L * -type f -name '*.S')
 override NASMFILES := $(shell cd src && find -L * -type f -name '*.asm')
-override OBJ := $(addprefix obj/, $(ASFILES:.s=.s.o) $(CFILES:.c=.c.o)  $(NASMFILES:.asm=.asm.o))
+override OBJ := $(addprefix obj/,$(CFILES:.c=.c.o) $(ASFILES:.S=.S.o) $(NASMFILES:.asm=.asm.o))
 override HEADER_DEPS := $(addprefix obj/,$(CFILES:.c=.c.d) $(ASFILES:.S=.S.d))
 
 # Default target.
@@ -110,13 +109,13 @@ bin/$(KERNEL): GNUmakefile linker.ld $(OBJ)
 # Include header dependencies.
 -include $(HEADER_DEPS)
 
-# Compilation rules for *.s files.
-obj/%.s.o: src/%.s GNUmakefile
+# Compilation rules for *.c files.
+obj/%.c.o: src/%.c GNUmakefile src/limine.h
 	mkdir -p "$$(dirname $@)"
 	$(KCC) $(KCFLAGS) $(KCPPFLAGS) -c $< -o $@
 
-# Compilation rules for *.c files.
-obj/%.c.o: src/%.c GNUmakefile src/limine.h
+# Compilation rules for *.S files.
+obj/%.S.o: src/%.S GNUmakefile
 	mkdir -p "$$(dirname $@)"
 	$(KCC) $(KCFLAGS) $(KCPPFLAGS) -c $< -o $@
 
