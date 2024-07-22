@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "graphics.h": "c",
+        "stdint.h": "c",
+        "limine.h": "c",
+        "flanterm.h": "c",
+        "mangoshell.h": "c",
+        "main.h": "c",
+        "commands.h": "c"
+    }
+}
