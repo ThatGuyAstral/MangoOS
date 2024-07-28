@@ -1,9 +1,8 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
-#include <limine.h>
 #include <main.h>
-#include <system/smem.h>
+
 // Set the base revision to 2, this is recommended as this is the latest
 // base revision described by the Limine boot protocol specification.
 // See specification for further info.
@@ -85,10 +84,12 @@ void _start(void) {
 
     // Fetch the first framebuffer.
     fb = framebuffer_request.response->framebuffers[0];
+    struct flanterm_context *ftctx = flanterm_fb_init(NULL, NULL, fb->address, fb->width, fb->height, fb->pitch, fb->red_mask_size, fb->red_mask_shift, fb->green_mask_size, fb->green_mask_shift, fb->blue_mask_size, fb->blue_mask_shift, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 0, 0, 0);
 
     InitializeGDT();
-
-    ftctx = flanterm_fb_init(NULL, NULL, fb->address, fb->width, fb->height, fb->pitch, fb->red_mask_size, fb->red_mask_shift, fb->green_mask_size, fb->green_mask_shift, fb->blue_mask_size, fb->blue_mask_shift, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 0, 0, 0);
+    log(ftctx, 0, "Initialized GDT");
+    InitializeIDT();
+    log(ftctx, 0, "Initialized IDT");
 
     flanterm_write(ftctx, "\e[33mmangoOS\e[0m version 0.1.0\n");
     flanterm_write(ftctx, "written with love by cosmicDev (https://github.com/ThatGuyAstral)");
