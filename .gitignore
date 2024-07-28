@@ -1,3 +1,5 @@
 *.iso
 .vscode/
 limine/
+kernel/bin/
+kernel/obj/
