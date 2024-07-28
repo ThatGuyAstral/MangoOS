@@ -9,12 +9,8 @@ static struct TaskStateSegment taskss;
 static GDT gdt;
 static struct GDTPtr gdtPtr;
 
-<<<<<<< HEAD
-void create_descriptors() {
-=======
 void create_descriptors()
 {
->>>>>>> b8148e61b8142a029bdccc0b3d7358738ed5ef88
     // 0x00: Null descriptor
     gdt.null.limit_15_0 = 0;
     gdt.null.base_15_0 = 0;
@@ -88,7 +84,12 @@ void create_descriptors()
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 void InitializeGDT() {
+=======
+void InitializeGDT()
+{
+>>>>>>> b8148e61b8142a029bdccc0b3d7358738ed5ef88
 =======
 void InitializeGDT()
 {
