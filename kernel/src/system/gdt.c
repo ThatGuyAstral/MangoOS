@@ -83,17 +83,7 @@ void create_descriptors()
     gdt.tss_high.base_31_24 = 0;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 void InitializeGDT() {
-=======
-void InitializeGDT()
-{
->>>>>>> b8148e61b8142a029bdccc0b3d7358738ed5ef88
-=======
-void InitializeGDT()
-{
->>>>>>> b8148e61b8142a029bdccc0b3d7358738ed5ef88
     create_descriptors();
 
     //memzero tts
