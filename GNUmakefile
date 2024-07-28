@@ -43,7 +43,11 @@ $(IMAGE_NAME).iso: limine/limine kernel
 	mkdir -p iso_root/boot
 	cp -v kernel/bin/kernel iso_root/boot/
 	mkdir -p iso_root/boot/limine
+<<<<<<< HEAD
 	cp -v limine.cfg limine/limine-bios.sys limine/limine-bios-cd.bin limine/limine-uefi-cd.bin liminewp.bmp iso_root/boot/limine
+=======
+	cp -v limine.cfg limine/limine-bios.sys limine/limine-bios-cd.bin limine/limine-uefi-cd.bin iso_root/boot/limine/
+>>>>>>> b8148e61b8142a029bdccc0b3d7358738ed5ef88
 	mkdir -p iso_root/EFI/BOOT
 	cp -v limine/BOOTX64.EFI iso_root/EFI/BOOT/
 	cp -v limine/BOOTIA32.EFI iso_root/EFI/BOOT/
